@@ -1,9 +1,11 @@
 <script setup>
 
 import {ref} from "vue";
-import axios from "axios";
-
-let addr = "http://localhost:12080/api/login";
+import {postRequest} from "@/utils/apis.js";
+// import { ElMessage } from 'element-plus'
+import { h } from 'vue'
+import { ElNotification } from 'element-plus'
+import router from "@/router";
 
 const form = ref({
   username: '',
@@ -11,13 +13,15 @@ const form = ref({
 })
 
 const onSubmit = () => {
-  axios.post(addr, form.value)
-    .then(res => {
-      alert(res.data.message);
+  postRequest("/login", form.value).then(response => {
+    ElNotification({
+      title: '登录成功',
+      message: '欢迎回来',
+      type: 'success'
     })
-    .catch(err => {
-      console.log(err);
-    })
+    router.push("/home")
+
+  })
 }
 
 const onCancel = () => {
