@@ -13,14 +13,16 @@ const form = ref({
 })
 
 const onSubmit = () => {
+  //TODO 密码加密一次再传输
   postRequest("/login", form.value).then(response => {
-    ElNotification({
-      title: '登录成功',
-      message: '欢迎回来',
-      type: 'success'
-    })
-    router.push("/home")
-
+    if (response.data.status === "success") {
+      ElNotification({
+        title: '登录成功',
+        message: '欢迎回来',
+        type: 'success'
+      })
+      router.push("/home")
+    }
   })
 }
 
