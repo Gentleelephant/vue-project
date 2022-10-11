@@ -19,20 +19,25 @@ const onSubmit = () => {
     username: form.value.username,
     password: sha.toString()
   }
-  postRequest("/login", user).then(response => {
-    buttonDisabled.value = true
-    if (response !== undefined && response.status === "success") {
+  // postRequest("/login", user).then(response => {
+  //   buttonDisabled.value = true
+  //   if (response !== undefined && response.status === "success") {
+  //     ElNotification({
+  //       title: '登录成功',
+  //       message: '欢迎回来',
+  //       type: 'success'
+  //     })
+  //     router.push("/home/users")
+  //   }
+  //   setTimeout(() => {
+  //     buttonDisabled.value = false
+  //   }, 3000)
+  // })
       ElNotification({
         title: '登录成功',
-        message: '欢迎回来',
+        message: user.username +"\n"+ user.password,
         type: 'success'
       })
-      router.push("/home/users")
-    }
-    setTimeout(() => {
-      buttonDisabled.value = false
-    }, 3000)
-  })
 }
 
 const onCancel = () => {
