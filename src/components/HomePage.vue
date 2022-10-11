@@ -1,5 +1,5 @@
 <script setup>
-
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -13,7 +13,7 @@
           Aside
         </el-aside>
         <el-main class="main">
-          Main
+          <RouterView />
         </el-main>
       </el-container>
     </el-container>

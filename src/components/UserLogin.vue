@@ -2,27 +2,36 @@
 
 import {ref} from "vue";
 import {postRequest} from "@/utils/apis.js";
-// import { ElMessage } from 'element-plus'
-import { h } from 'vue'
-import { ElNotification } from 'element-plus'
+import {ElNotification} from 'element-plus'
 import router from "@/router";
+import sha256 from 'crypto-js/sha256';
 
 const form = ref({
   username: '',
   password: ''
 })
 
+let buttonDisabled = ref(false)
+
 const onSubmit = () => {
-  //TODO 密码加密一次再传输
-  postRequest("/login", form.value).then(response => {
-    if (response.data.status === "success") {
+  const sha = sha256(form.value.password);
+  let user = {
+    username: form.value.username,
+    password: sha.toString()
+  }
+  postRequest("/login", user).then(response => {
+    buttonDisabled.value = true
+    if (response !== undefined && response.status === "success") {
       ElNotification({
         title: '登录成功',
         message: '欢迎回来',
         type: 'success'
       })
-      router.push("/home")
+      router.push("/home/users")
     }
+    setTimeout(() => {
+      buttonDisabled.value = false
+    }, 3000)
   })
 }
 
@@ -43,7 +52,7 @@ const onCancel = () => {
         <el-input v-model="form.password" type="password" show-password/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Login</el-button>
+        <el-button type="primary" @click="onSubmit" :disabled="buttonDisabled" plain>Login</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>

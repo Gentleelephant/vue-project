@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -12,7 +11,14 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: () => import('../components/HomePage.vue')
+      component: () => import('../components/HomePage.vue'),
+      children: [
+        {
+            path: 'users',
+            name: 'users',
+            component: () => import('../components/UserList.vue')
+        }
+      ]
     }
   ]
 })
